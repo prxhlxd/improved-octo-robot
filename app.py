@@ -1,30 +1,30 @@
-from flask import Flask, request, render_template
 import ipaddress
+from flask import Flask, request, render_template
 
 app = Flask(__name__)
 
-# Define the allowed subnet (change this to match your organization's network)
-ORG_NETWORK = ipaddress.ip_network("192.168.137.1/24", strict=False)
+# Replace this with your actual public IP or subnet (e.g., "145.654.435.1" or "145.654.0.0/16")
+ALLOWED_ORG_IP = ipaddress.ip_network("145.654.435.1", strict=False)
 
 def get_client_ip():
-    """Retrieve the real client IP, considering proxies."""
+    """Retrieve real client public IP."""
     ip = request.headers.get("X-Forwarded-For", request.remote_addr)
-    client_ip = ip.split(",")[0].strip()  # Take the first IP (original client)
+    client_ip = ip.split(",")[0].strip()  # First IP in case of multiple proxies
     return client_ip
 
 def is_allowed(ip):
-    """Check if an IP belongs to the organization's network."""
-    return ipaddress.ip_address(ip) in ORG_NETWORK
+    """Check if an IP belongs to the organization's public network."""
+    return ipaddress.ip_address(ip) in ALLOWED_ORG_IP
 
 @app.route('/')
 def home():
     client_ip = get_client_ip()
     if is_allowed(client_ip):
-        message = f"✅ Yes, Allowed! Your IP: {client_ip}"
+        message = f"✅ Yes, Allowed! Your Public IP: {client_ip}"
     else:
-        message = f"❌ No, Not Allowed! Your IP: {client_ip}"
+        message = f"❌ No, Not Allowed! Your Public IP: {client_ip}"
 
     return render_template('index.html', message=message)
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(host='0.0.0.0', port=5000, debug=True)
