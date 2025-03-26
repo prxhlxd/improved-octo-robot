@@ -4,7 +4,7 @@ from flask import Flask, request, render_template
 app = Flask(__name__)
 
 # Replace this with your actual public IP or subnet (e.g., "145.654.435.1" or "145.654.0.0/16")
-ALLOWED_ORG_IP = ipaddress.ip_network("182.75.45.1", strict=False)
+ALLOWED_ORG_IP = ipaddress.ip_network("103.177.0.0/16", strict=False)
 
 def get_client_ip():
     """Retrieve real client public IP."""
