@@ -7,7 +7,7 @@ app = Flask(__name__)
 BITS_0 = ipaddress.ip_network("14.98.244.193", strict=False)
 BITS_1 = ipaddress.ip_network("103.177.232.33", strict=False)
 BITS_2 = ipaddress.ip_network("182.75.45.1", strict=False)
-BITS_3 = ipaddress.ip_network("182.75.45.1", strict=False)
+BITS_3 = ipaddress.ip_network("115.244.45.193", strict=False)
 
 def get_client_ip():
     """Retrieve the real client IP, considering proxies."""
